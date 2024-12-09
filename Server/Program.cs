@@ -11,7 +11,7 @@ namespace Server
 
     class Program
     {
-        private const string dllPath = @"C:\Users\Serhiy\OS\lab7\Server\x64\Debug\Dll1.dll";
+        private const string dllPath = @"C:\Users\Nazar\OneDrive\Documents\GitHub\4BetCapital\Server\x64\Debug\Dll1.dll";
 
         // Імпортуємо функції з C++ бібліотеки
         [DllImport(dllPath)]
@@ -44,7 +44,7 @@ namespace Server
             var serverEndPoint = new sockaddr_in
             {
                 sin_family = 2, // AF_INET
-                sin_port = (ushort)IPAddress.HostToNetworkOrder(8080), // Порт 8080
+                sin_port = (ushort)IPAddress.HostToNetworkOrder((short)1111), // Порт 8080
                 sin_addr = new in_addr { s_addr = BitConverter.ToUInt32(IPAddress.Parse("127.0.0.1").GetAddressBytes(), 0) }
             };
 
@@ -57,7 +57,7 @@ namespace Server
             // Прослуховування порту
             ListenSocket(serverSocket, 10);
 
-            Console.WriteLine("Server is listening on port 8080...");
+            Console.WriteLine("Server is listening on port 1111...");
 
             // Прийом з'єднання
             int addrlen = Marshal.SizeOf(typeof(sockaddr_in));
