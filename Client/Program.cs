@@ -26,34 +26,34 @@ namespace Client
         [DllImport(dllPath)]
         public static extern void CloseSocket(IntPtr sock);
 
-        static void Main(string[] args)
-        {
-            // Створення сокета
-            IntPtr clientSocket = CreateSocket();
+        //static void Main(string[] args)
+        //{
+        //    // Створення сокета
+        //    IntPtr clientSocket = CreateSocket();
 
-            // Підключення до сервера
-            int result = ConnectSocket(clientSocket, "127.0.0.1", 1111);
-            if (result == -1)
-            {
-                Console.WriteLine("Connection failed.");
-                return;
-            }
+        //    // Підключення до сервера
+        //    int result = ConnectSocket(clientSocket, "127.0.0.1", 1111);
+        //    if (result == -1)
+        //    {
+        //        Console.WriteLine("Connection failed.");
+        //        return;
+        //    }
 
-            Console.WriteLine("Connected to the server.");
+        //    Console.WriteLine("Connected to the server.");
 
-            // Відправка даних на сервер
-            string message = "Hello from client!";
-            byte[] data = Encoding.ASCII.GetBytes(message);
-            SendData(clientSocket, data, data.Length);
+        //    // Відправка даних на сервер
+        //    string message = "Hello from client!";
+        //    byte[] data = Encoding.ASCII.GetBytes(message);
+        //    SendData(clientSocket, data, data.Length);
 
-            // Отримання відповіді від сервера
-            byte[] buffer = new byte[1024];
-            int bytesRead = ReceiveData(clientSocket, buffer, buffer.Length);
-            string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            Console.WriteLine("Received from server: " + response);
+        //    // Отримання відповіді від сервера
+        //    byte[] buffer = new byte[1024];
+        //    int bytesRead = ReceiveData(clientSocket, buffer, buffer.Length);
+        //    string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+        //    Console.WriteLine("Received from server: " + response);
 
-            // Закриття сокета
-            CloseSocket(clientSocket);
-        }
+        //    // Закриття сокета
+        //    CloseSocket(clientSocket);
+        //}
     }
 }
