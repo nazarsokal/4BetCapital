@@ -73,7 +73,7 @@ namespace Server
             return people;  
         }
 
-        public bool AddPersonToDb(Person person)
+        public bool PostPersonToDb(Person person)
         {
             List<Person> registredUsers = GetUsersFromDB();
 
@@ -112,8 +112,8 @@ namespace Server
 
         public bool PostSportEventToDB(SportEvent sportEvent)
         {
-            string sql = "INSERT INTO sporteventstable (NameTeam1, NameTeam2, DateStart, DateEnd, CoefficientsWinTeam1, CoefficientsWinTeam2, CoefficientsDraw) " +
-                "VALUES (@NameTeam1, @NameTeam2, @DateStart, @DateEnd, @CoefficientsWinTeam1, @CoefficientsWinTeam2, @CoefficientsDraw)";
+            string sql = "INSERT INTO sporteventstable (NameTeam1, NameTeam2, DateStart, DateEnd, CoefficientsWinTeam1, CoefficientsWinTeam2, CoefficientDraw) " +
+                "VALUES (@NameTeam1, @NameTeam2, @DateStart, @DateEnd, @CoefficientsWinTeam1, @CoefficientsWinTeam2, @CoefficientDraw)";
             MySqlCommand command = new MySqlCommand(sql, conn);
 
             command.Parameters.AddWithValue("@NameTeam1", sportEvent.Team1Name);
@@ -122,7 +122,7 @@ namespace Server
             command.Parameters.AddWithValue("@DateEnd", sportEvent.DateEnd);
             command.Parameters.AddWithValue("@CoefficientsWinTeam1", sportEvent.CoefficientsTeam1Win);
             command.Parameters.AddWithValue("@CoefficientsWinTeam2", sportEvent.CoefficientsTeam2Win);
-            command.Parameters.AddWithValue("@CoefficientsDraw", sportEvent.CoefficientsDraw);
+            command.Parameters.AddWithValue("@CoefficientDraw", sportEvent.CoefficientsDraw);
 
             if (conn.State != System.Data.ConnectionState.Open)
             {

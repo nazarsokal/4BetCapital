@@ -27,5 +27,11 @@ namespace Server
             CoefficientsTeam2Win = coefficientsTeam2Win;
             CoefficientsDraw = coefficientsDraw;
         }
+
+        public override string ToString()
+        {
+            return $"{Team1Name} vs {Team2Name}. From {DateStart} to {DateEnd}. Coefs on {Team1Name} winning: {CoefficientsTeam1Win}." +
+                $"Coefs on {Team2Name} winning: {CoefficientsTeam2Win}. Coeffs on draw: {CoefficientsDraw}";
+        }
     }
 }

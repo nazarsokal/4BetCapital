@@ -99,7 +99,11 @@ namespace Server
 
                                 if(obj is Person person)
                                 {
-                                    dbManager.AddPersonToDb(person);
+                                    dbManager.PostPersonToDb(person);
+                                }
+                                else if(obj is SportEvent sportEvent)
+                                {
+                                    dbManager.PostSportEventToDB(sportEvent);
                                 }
                             }
                             else
@@ -157,6 +161,8 @@ namespace Server
                 {
                     case "Person":
                         return JsonSerializer.Deserialize<Person>(input);
+                    case "SportEvent":
+                        return JsonSerializer.Deserialize<SportEvent>(input);
                     default:
                         throw new InvalidOperationException($"Unknown type: {type}");
                 }
