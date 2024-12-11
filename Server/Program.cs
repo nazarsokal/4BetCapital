@@ -9,7 +9,7 @@ namespace Server
 {
     class Program
     {
-        private const string dllPath = @"C:\Users\Nazar\OneDrive\Documents\GitHub\4BetCapital\Server\x64\Debug\Dll1.dll";
+        private const string dllPath = @"C:\Users\Admin\Documents\GitHub\4BetCapital\Server\x64\Debug\Dll1.dll";
 
         // Імпортуємо функції з C++ бібліотеки
         [DllImport(dllPath)] public static extern IntPtr CreateSocket();
@@ -48,7 +48,7 @@ namespace Server
             {
                 sin_family = 2, // AF_INET
                 sin_port = (ushort)IPAddress.HostToNetworkOrder((short)1111), // Порт
-                sin_addr = new in_addr { s_addr = BitConverter.ToUInt32(IPAddress.Parse("192.168.2.22").GetAddressBytes(), 0) },
+                sin_addr = new in_addr { s_addr = BitConverter.ToUInt32(IPAddress.Parse("192.168.2.59").GetAddressBytes(), 0) },
                 sin_zero = new byte[8]
             };
 
@@ -64,7 +64,7 @@ namespace Server
 
             // Прослуховування вхідних підключень
             ListenSocket(serverSocket, 10);
-            Console.WriteLine("Server is listening on 192.168.2.22:1111...");
+            Console.WriteLine("Server is listening on 192.168.2.59:1111...");
 
             // Список для зберігання клієнтських сокетів
             List<IntPtr> clientSockets = new List<IntPtr>();
@@ -86,19 +86,20 @@ namespace Server
                     IntPtr sock = clientSockets[i];
                     if (IsDataAvailable(sock) == 1)
                     {
+                        DbManager dbManager = new DbManager();
                         byte[] buffer = new byte[1024];
                         int bytesRead = ReceiveData(sock, buffer, buffer.Length);
 
                         if (bytesRead > 0)
                         {
                             string receivedData = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                            if (isJSON(receivedData))
+                            if (IsJson(receivedData))
                             {
-                                var obj = getClass(receivedData);
+                                var obj = ParseJson(receivedData);
 
                                 if(obj is Person person)
                                 {
-                                    Console.WriteLine(person);
+                                    dbManager.AddPersonToDb(person);
                                 }
                             }
                             else
@@ -107,10 +108,15 @@ namespace Server
                             }
 
                             // Відправка відповіді
-                            string responseMessage = $"Hello from Server";
-                            byte[] response = Encoding.ASCII.GetBytes(responseMessage);
-                            int bytesSent = SendData(sock, response, response.Length);
-                            Console.WriteLine($"Sent to client {i + 1}: {responseMessage}, Bytes sent: {bytesSent}");
+                            var UsersList = dbManager.GetUsersFromDB();
+                            foreach (var item in UsersList)
+                            {
+                                string responseMessage = JsonSerializer.Serialize(item, typeof(Person));
+                                byte[] response = Encoding.ASCII.GetBytes(responseMessage);
+                                int bytesSent = SendData(sock, response, response.Length);
+                                Console.WriteLine($"Sent to client {i + 1}: {responseMessage}, Bytes sent: {bytesSent}");
+                            }
+  
                         }
                         else
                         {
@@ -125,7 +131,7 @@ namespace Server
             }
         }
 
-        private static bool isJSON(string input)
+        private static bool IsJson(string input)
         {
             try
             {
@@ -138,12 +144,25 @@ namespace Server
             }
         }
 
-        private static object getClass(string input)
+        private static object ParseJson(string input)
         {
-            object deserilisiedObject = JsonSerializer.Deserialize<object>(input);
-            //Type objType = deserilisiedObject.GetType();
+            // Десеріалізація з динамічним визначенням типу
+            var baseObject = JsonSerializer.Deserialize<Dictionary<string, object>>(input);
 
-            return deserilisiedObject;
+            if (baseObject.ContainsKey("type"))
+            {
+                string type = baseObject["type"].ToString();
+
+                switch (type)
+                {
+                    case "Person":
+                        return JsonSerializer.Deserialize<Person>(input);
+                    default:
+                        throw new InvalidOperationException($"Unknown type: {type}");
+                }
+            }
+
+            throw new InvalidOperationException("JSON does not contain a 'type' field.");
         }
     }
 }

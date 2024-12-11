@@ -14,7 +14,7 @@ namespace Server
 
         public string? Password { get; set; }
 
-        public int? Balance { get; private set; }
+        public int? Balance { get; set; }
 
         public override string ToString()
         {
