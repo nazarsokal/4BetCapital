@@ -2,66 +2,117 @@
 {
     partial class Form1
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        public Form1()
         {
-            if (disposing && (components != null))
+            // Налаштування форми
+            this.Text = "Спортивні Ставки";
+            this.Size = new System.Drawing.Size(1200, 800);
+
+            // Баланс панель
+            Panel balancePanel = new Panel
             {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
+                Size = new System.Drawing.Size(1180, 50),
+                Location = new System.Drawing.Point(10, 10),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Label balanceLabel = new Label
+            {
+                Text = "Баланс:",
+                Location = new System.Drawing.Point(10, 15),
+                AutoSize = true
+            };
+            balancePanel.Controls.Add(balanceLabel);
+            this.Controls.Add(balancePanel);
+
+            // Панель для вкладок (Футбол, Волейбол, Баскетбол, Кіберспорт)
+            TabControl tabControl = new TabControl
+            {
+                Size = new System.Drawing.Size(800, 600),
+                Location = new System.Drawing.Point(200, 70)
+            };
+
+            // Додавання вкладок
+            tabControl.TabPages.Add(CreateSportTab("Футбол"));
+            tabControl.TabPages.Add(CreateSportTab("Волейбол"));
+            tabControl.TabPages.Add(CreateSportTab("Баскетбол"));
+            tabControl.TabPages.Add(CreateSportTab("Кіберспорт"));
+            this.Controls.Add(tabControl);
+
+            // Реклама панель
+            Panel adPanel = new Panel
+        {
+                Size = new System.Drawing.Size(180, 600),
+                Location = new System.Drawing.Point(10, 70),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            Label adLabel = new Label
+            {
+                Text = "Реклама",
+                Location = new System.Drawing.Point(50, 290),
+                AutoSize = true
+            };
+            adPanel.Controls.Add(adLabel);
+            this.Controls.Add(adPanel);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
+        private TabPage CreateSportTab(string sportName)
         {
-            this.SuspendLayout();
+            TabPage tabPage = new TabPage(sportName);
 
-            // Label for available bets
-            Label lblAvailableBets = new Label();
-            lblAvailableBets.Text = "Доступні ставки:";
-            lblAvailableBets.Location = new Point(10, 10);
-            lblAvailableBets.Size = new Size(200, 20);
+            // Створення подій для спорту
+            FlowLayoutPanel eventPanel = new FlowLayoutPanel
+        {
+                Dock = DockStyle.Fill,
+                AutoScroll = true
+            };
 
-            // ListBox for displaying available bets
-            ListBox lstAvailableBets = new ListBox();
-            lstAvailableBets.Location = new Point(10, 40);
-            lstAvailableBets.Size = new Size(300, 200);
-
-            // Label for inputting bets
-            Label lblPlaceBet = new Label();
-            lblPlaceBet.Text = "Ваша ставка:";
-            lblPlaceBet.Location = new Point(10, 260);
-            lblPlaceBet.Size = new Size(200, 20);
-
-            // TextBox for entering bet amount
-            TextBox txtBetAmount = new TextBox();
-            txtBetAmount.Location = new Point(10, 290);
-            txtBetAmount.Size = new Size(200, 25);
-
-            // Button to place bet
-            Button btnPlaceBet = new Button();
-            btnPlaceBet.Text = "Зробити ставку";
-            btnPlaceBet.Location = new Point(220, 290);
-            btnPlaceBet.Size = new Size(150, 30);
-            btnPlaceBet.Click += (sender, e) =>
+            for (int i = 0; i < 5; i++)
             {
-                // TODO: Handle placing a bet
+                Panel matchPanel = new Panel
+                {
+                    Size = new System.Drawing.Size(750, 100),
+                    BorderStyle = BorderStyle.FixedSingle
+                };
 
-                MessageBox.Show("Ставку зроблено!");
+                Label timeLabel = new Label
+                {
+                    Text = "Вт: 14:00",
+                    Location = new System.Drawing.Point(10, 10),
+                    AutoSize = true
+                };
+
+                Label team1Label = new Label
+                {
+                    Text = "Команда 1",
+                    Location = new System.Drawing.Point(10, 40),
+                    AutoSize = true
+                };
+
+                Label drawLabel = new Label
+                {
+                    Text = "X",
+                    Location = new System.Drawing.Point(320, 40),
+                    AutoSize = true
+                };
+
+                Label team2Label = new Label
+            {
+                    Text = "Команда 2",
+                    Location = new System.Drawing.Point(600, 40),
+                    AutoSize = true
+                };
+
+                Label odds1Label = new Label
+                {
+                    Text = "1.43",
+                    Location = new System.Drawing.Point(10, 70),
+                    AutoSize = true
+                };
+                Button bet1Button = new Button
+                {
+                    Text = "Ставка",
+                    Location = new System.Drawing.Point(60, 65),
+                    Size = new System.Drawing.Size(75, 25)
             };
 
             // Label for results
@@ -70,39 +121,48 @@
             lblResults.Location = new Point(350, 10);
             lblResults.Size = new Size(200, 20);
 
-            // ListBox for displaying results
-            ListBox lstResults = new ListBox();
-            lstResults.Location = new Point(350, 40);
-            lstResults.Size = new Size(300, 200);
+                Label oddsDrawLabel = new Label
+                {
+                    Text = "1.77",
+                    Location = new System.Drawing.Point(320, 70),
+                    AutoSize = true
+                };
+                Button betDrawButton = new Button
+                {
+                    Text = "Ставка",
+                    Location = new System.Drawing.Point(380, 65),
+                    Size = new System.Drawing.Size(75, 25)
+                };
 
-            // Button to refresh results
-            Button btnRefreshResults = new Button();
-            btnRefreshResults.Text = "Оновити результати";
-            btnRefreshResults.Location = new Point(350, 260);
-            btnRefreshResults.Size = new Size(150, 30);
-            btnRefreshResults.Click += (sender, e) =>
+                Label odds2Label = new Label
+                {
+                    Text = "2.20",
+                    Location = new System.Drawing.Point(600, 70),
+                    AutoSize = true
+                };
+                Button bet2Button = new Button
             {
-                // TODO: Handle refreshing results
-                MessageBox.Show("Результати оновлено!");
+                    Text = "Ставка",
+                    Location = new System.Drawing.Point(660, 65),
+                    Size = new System.Drawing.Size(75, 25)
             };
 
-            // Form1
-            this.AutoScaleDimensions = new SizeF(8F, 20F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(700, 400);
-            this.Controls.Add(lblAvailableBets);
-            this.Controls.Add(lstAvailableBets);
-            this.Controls.Add(lblPlaceBet);
-            this.Controls.Add(txtBetAmount);
-            this.Controls.Add(btnPlaceBet);
-            this.Controls.Add(lblResults);
-            this.Controls.Add(lstResults);
-            this.Controls.Add(btnRefreshResults);
-            this.Name = "Form1";
-            this.Text = "Букмекерська контора";
-            this.ResumeLayout(false);
+                matchPanel.Controls.Add(timeLabel);
+                matchPanel.Controls.Add(team1Label);
+                matchPanel.Controls.Add(drawLabel);
+                matchPanel.Controls.Add(team2Label);
+                matchPanel.Controls.Add(odds1Label);
+                matchPanel.Controls.Add(bet1Button);
+                matchPanel.Controls.Add(oddsDrawLabel);
+                matchPanel.Controls.Add(betDrawButton);
+                matchPanel.Controls.Add(odds2Label);
+                matchPanel.Controls.Add(bet2Button);
+
+                eventPanel.Controls.Add(matchPanel);
         }
 
-        #endregion
+            tabPage.Controls.Add(eventPanel);
+            return tabPage;
+        }
     }
 }
